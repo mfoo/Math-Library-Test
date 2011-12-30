@@ -7,6 +7,7 @@ decision on which to use. When I have finished my test I will add the results
 here.
 
 My requirements are:
+
 * C++
 * Matrix operations
 * Vector operations
