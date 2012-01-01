@@ -161,6 +161,7 @@ Things to test
 ==============
 This is for gaming applications. Features that I can think of that need testing
 are:
+
 * Matrix operations - including addition, subtraction, multiplication,
   inversion, transposition, translation, rotation, scale
 * Vector operations - cross/dot product, normalisation, zeroing, magnitude,
