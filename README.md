@@ -23,7 +23,7 @@ My requirements are:
 At the time of writing, the libraries I will be testing are
 [Eigen](http://eigen.tuxfamily.org), [GLM](http://glm.g-truc.net/), and
 [CML](http://cmldev.net/). These choices are largely influenced by reading
-their over pages and posts at the [Game Development
+their websites and posts at the [Game Development
 StackExchange](http://gamedev.stackexchange.com/) site:
 
 * [Best C Math Library for Game
@@ -33,14 +33,14 @@ StackExchange](http://gamedev.stackexchange.com/) site:
 * [Complete Math Library for use in OpenGL ES 2.0
   Game?](http://gamedev.stackexchange.com/questions/8234/complete-math-library-for-use-in-opengl-es-2-0-game)
 
-This project will be able to be built and run with CMake when it is finished. I
-intend to test each library on Linux, Mac OS X, Windows and Android.
+I intend to test each library on Linux, Mac OS X, Windows and Android using
+CMake.
 
 Libraries Overview
 ==================
 
-This section contains my notes to help
-understand the design choices and advantages and disadvantages of each library.
+This section contains my notes to help understand the design choices and
+advantages and disadvantages of each library.
 
 Configurable Math Library (CML)
 -------------------------------
@@ -135,7 +135,6 @@ Includes features such as:
 * Simplex noise generation
 * Conversion of Euler angles
 
-
 There's only one header file to include, `glm/glm.hpp`. `glm/ext.hpp` can be
 included to add extended features (non GLSL features).
 
@@ -185,4 +184,70 @@ Running the tests
     cd build
     cmake ..
 
-This will generate build files using the default for your environment.
+Results
+=======
+So far I've tested matrix addition and multiplication. `src/Main.cpp` contains
+code that will generate two lists of 10 million 4x4 float matrices for each
+library, populate them with random float values, and then add each one from the
+first column to the second. It will then do the same for multiplication. It
+will repeat this step 10 times and print out how long it took for each library.
+
+My results for addition and subtraction are incredible. Note to self: find out
+if I've made a mistake here. I'm using a 2.2ghz early 2011 MacBook Pro.
+
+    Martin-Foots-MacBook-Pro:build martin$ cd release
+    Martin-Foots-MacBook-Pro:release martin$ cmake -DCMAKE_BUILD_TYPE=RELEASE ../..
+    ...
+    Martin-Foots-MacBook-Pro:release martin$ make
+    ...
+    [100%] Built target Main
+    Martin-Foots-MacBook-Pro:release martin$ ./Main 
+    Testing Eigen library Matrix4f class.
+    Performing additions.
+    Took 300 milliseconds.
+    Performing multiplications.
+    Took 866 milliseconds.
+    Testing GLM library Matrix4f class.
+    Performing additions.
+    Took 753 milliseconds.
+    Performing multiplications.
+    Took 3906 milliseconds.
+    Testing CML library Matrix4f class.
+    Performing additions.
+    Took 928 milliseconds.
+    Performing multiplications.
+    Took 5374 milliseconds.
+    Martin-Foots-MacBook-Pro:release martin$ cd ../debug/
+    Martin-Foots-MacBook-Pro:debug martin$ cmake -DCMAKE_BUILD_TYPE=DEBUG ../..
+    ...
+    Martin-Foots-MacBook-Pro:debug martin$ make
+    ...
+    [100%] Built target Main
+    Martin-Foots-MacBook-Pro:debug martin$ ./Main 
+    Testing Eigen library Matrix4f class.
+    Performing additions.
+    Took 73905 milliseconds.
+    Performing multiplications.
+    Took 190271 milliseconds.
+    Testing GLM library Matrix4f class.
+    Performing additions.
+    Took 22578 milliseconds.
+    Performing multiplications.
+    Took 73164 milliseconds.
+    Testing CML library Matrix4f class.
+    Performing additions.
+    Took 124408 milliseconds.
+    Performing multiplications.
+    Took 210810 milliseconds.
+
+The results in table form:
+
+            Time (ms) for 10,000,000 operations
+            Debug (no optimisations)            Release
+            Addition        Multiplication      Addition        Multiplication
+    Eigen   73905           190271              300             866
+    GLM     22578           73164               753             3906
+    CML     124408          210810              928             5374
+
+GLM was by far the fastest without any compiler optimisations. Eigen was
+incredibly fast with them turned on.
