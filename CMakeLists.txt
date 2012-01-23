@@ -36,6 +36,45 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
 
+endif(CMAKE_COMPILER_IS_GNUCXX)
+
+if(ANDROID)
+    add_definitions(-D__STDC_INT64__)
+    #    set(CMAKE_REQUIRED_INCLUDES 
+    #  ${ANDROID_NDK_SYSROOT}/usr 
+    #  ${ANDROID_NDK_SYSROOT}/usr/include
+    #  ${CMAKE_REQUIRED_INCLUDES})
+    #
+    #set(CMAKE_PREFIX_PATH
+    #        ${ANDROID_NDK_SYSROOT}
+    #        ${CMAKE_PREFIX_PATH})
+    #
+    
+    #set(ARM_TARGET "armeabi-v7a")
+
+    # Enable NEON
+    option(EIGEN_TEST_NEON "Enable/Disable Neon in tests/examples" ON)
+  if(EIGEN_TEST_NEON)
+      #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfloat-abi=softfp -mfpu=neon -mcpu=cortex-a8")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfloat-abi=softfp -mfpu=neon")
+    message(STATUS "Enabling NEON in tests/examples")
+  endif()
+
+
+    # With Android we build a shared library called MathTest rather than an
+    # executable.
+
+    # First overwrite the android-cmake output path.
+    #set(LIBRARY_OUTPUT_PATH_ROOT "${PROJECT_SOURCE_DIR}/android/libs/${ARM_TARGET}" CACHE PATH "Output path for JNI libs")
+    set(LIBRARY_OUTPUT_PATH_ROOT "${PROJECT_SOURCE_DIR}/android" CACHE PATH
+        "library output path")
+
+    message(STATUS "Library output path root is " ${LIBRARY_OUTPUT_PATH_ROOT})
+    set(ARM_TARGET "armeabi" CACHE STRING "arm target to use" FORCE)
+   message(STATUS ${ARM_TARGET})
+   add_library(MathTest SHARED src/Driver.cpp src/mother.cpp src/androidactivity.cpp)
+   # add_library(MathTest SHARED src/androidactivity.cpp src/mother.cpp)
+else()
   option(EIGEN_TEST_SSE2 "Enable/Disable SSE2 in tests/examples" ON)
   if(EIGEN_TEST_SSE2)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse2")
@@ -71,13 +110,6 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -maltivec -mabi=altivec")
     message(STATUS "Enabling AltiVec in tests/examples")
   endif()
-
-  option(EIGEN_TEST_NEON "Enable/Disable Neon in tests/examples" OFF)
-  if(EIGEN_TEST_NEON)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfloat-abi=softfp -mfpu=neon -mcpu=cortex-a8")
-    message(STATUS "Enabling NEON in tests/examples")
-  endif()
-
   check_cxx_compiler_flag("-fopenmp" COMPILER_SUPPORT_OPENMP)
   if(COMPILER_SUPPORT_OPENMP)
       option(EIGEN_TEST_OPENMP "Enable/Disable OpenMP in tests/examples" ON)
@@ -87,7 +119,6 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     endif()
   endif()
 
-endif(CMAKE_COMPILER_IS_GNUCXX)
-
-# Add a test program.
-add_executable(Main src/mother.c src/Main.cpp)
+    # Add a test program.
+add_executable(Main src/mother.c src/Main.cpp src/Driver.cpp)
+endif(ANDROID)
