@@ -3,9 +3,9 @@
 
 #include <cml/cml.h>
 #include <Eigen/Dense>
-#ifndef ANDROID
+//#ifndef ANDROID
 #include <glm/glm.hpp>
-#endif
+//#endif
 /**
  * Wrapper function that performs all the testing. This is not part of Main.cpp
  * because the function can be used on Android here, which doesn't use a
@@ -47,7 +47,7 @@ void test_eigen_mat4_multiplication(Eigen::Matrix4f* inputA,
                                     Eigen::Matrix4f* output,
                                     int count);
 
-#ifndef ANDROID
+//#ifndef ANDROID
 ///////////////////////////////////////////////////////////////////////////////
 // GLM library.
 ///////////////////////////////////////////////////////////////////////////////
@@ -58,7 +58,7 @@ void test_glm_mat4_addition(glm::mat4* inputA, glm::mat4* inputB,
 
 void test_glm_mat4_multiplication(glm::mat4* inputA, glm::mat4* inputB,
                                   glm::mat4* output, int count);
-#endif
+//#endif
 ///////////////////////////////////////////////////////////////////////////////
 // CML library.
 ///////////////////////////////////////////////////////////////////////////////

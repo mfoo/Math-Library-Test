@@ -9,21 +9,30 @@
 const int NUM_TESTS = 1000000;
 //const int NUM_TESTS = 10000000;
 
+#ifdef ANDROID
 #include <android/log.h>
 #define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "native-activity", __VA_ARGS__))
+#endif
+
 void testLibraries(int count) {
     {
 
     std::cout << "Testing Eigen library Matrix4f class." << std::endl;
 
+#ifdef ANDROID
     LOGI("Testing Eigen library Matrix4f class.");
+#endif
 
     Eigen::Matrix4f* inputA = generateEigenMat4s(count);
     Eigen::Matrix4f* inputB = generateEigenMat4s(count);
     Eigen::Matrix4f* output = generateEigenMat4s(count);
 
     std::cout << "Performing additions." << std::endl;
+
+#ifdef ANDROID
     LOGI("Performing additions.");
+#endif
+
     // Time how long it takes to add [count] matrices NUM_TESTS times.
     struct timeval start, end;
     gettimeofday(&start, NULL);
@@ -33,7 +42,10 @@ void testLibraries(int count) {
     gettimeofday(&end, NULL);
     difference(start, end);
 
+#ifdef ANDROID
     LOGI("Performing multiplications.");
+#endif
+
     std::cout << "Performing multiplications." << std::endl;
 
     // Time how long it takes to multiply [count] matrices NUM_TESTS times.
@@ -49,19 +61,23 @@ void testLibraries(int count) {
     delete[] output;
 
     }
-#ifndef ANDROID
+
     {
 
     std::cout << "Testing GLM library Matrix4f class." << std::endl;
+
+#ifdef ANDROID
     LOGI("Testing GLM library Matrix4f class.");
+#endif
 
     glm::mat4* inputA = generateGLMMat4s(count);
     glm::mat4* inputB = generateGLMMat4s(count);
     glm::mat4* output = generateGLMMat4s(count);
 
     std::cout << "Performing additions." << std::endl;
+#ifdef ANDROID
     LOGI("Performing additions.");
-
+#endif
     // Time how long it takes to add [count] matrices NUM_TESTS times.
     struct timeval start, end;
     gettimeofday(&start, NULL);
@@ -72,8 +88,9 @@ void testLibraries(int count) {
     difference(start, end);
 
     std::cout << "Performing multiplications." << std::endl;
+#ifdef ANDROID
     LOGI("Performing multiplications.");
-
+#endif
     // Time how long it takes to multiply [count] matrices NUM_TESTS times.
     gettimeofday(&start, NULL);
     for(int i = 0; i < NUM_TESTS; i++) {
@@ -87,19 +104,20 @@ void testLibraries(int count) {
     delete[] output;
 
     }
-#endif
     {
 
     std::cout << "Testing CML library Matrix4f class." << std::endl;
+#ifdef ANDROID
     LOGI("Testing CML library Matrix4f class.");
-
+#endif
     cml::matrix44f_c* inputA = generateCMLMat4s(count);
     cml::matrix44f_c* inputB = generateCMLMat4s(count);
     cml::matrix44f_c* output = generateCMLMat4s(count);
 
     std::cout << "Performing additions." << std::endl;
+#ifdef ANDROID
     LOGI("Performing additions.");
-
+#endif
     // Time how long it takes to add [count] matrices NUM_TESTS times.
     struct timeval start, end;
     gettimeofday(&start, NULL);
@@ -110,8 +128,9 @@ void testLibraries(int count) {
     difference(start, end);
 
     std::cout << "Performing multiplications." << std::endl;
+#ifdef ANDROID
     LOGI("Performing multiplications.");
-
+#endif
     // Time how long it takes to multiply [count] matrices NUM_TESTS times.
     gettimeofday(&start, NULL);
     for(int i = 0; i < NUM_TESTS; i++) {
@@ -147,7 +166,9 @@ void difference(timeval& start, timeval& end) {
     std::stringstream ss;
     ss << "Took " << mtime << " milliseconds.";
     std::cout << ss.str() << std::endl;
+#ifdef ANDROID
     LOGI(ss.str().c_str());
+#endif
 }
 
 Eigen::Matrix4f* generateEigenMat4s(int count) {
@@ -184,7 +205,6 @@ void test_eigen_mat4_multiplication(Eigen::Matrix4f* inputA,
     }
 }
 
-#ifndef ANDROID
 glm::mat4* generateGLMMat4s(int count) {
     float* randomNumbers = generateRandomNumbers(count);
 
@@ -214,7 +234,7 @@ void test_glm_mat4_multiplication(glm::mat4* inputA, glm::mat4* inputB,
         output[i] = inputA[i] * inputB[i];
     }
 }
-#endif
+
 cml::matrix44f_c* generateCMLMat4s(int count) {
     float* randomNumbers = generateRandomNumbers(count);
 

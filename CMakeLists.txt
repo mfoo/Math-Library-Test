@@ -70,7 +70,7 @@ if(ANDROID)
         "library output path")
 
     message(STATUS "Library output path root is " ${LIBRARY_OUTPUT_PATH_ROOT})
-    set(ARM_TARGET "armeabi" CACHE STRING "arm target to use" FORCE)
+    set(ARM_TARGET "armeabi-v7a" CACHE STRING "arm target to use" FORCE)
    message(STATUS ${ARM_TARGET})
    add_library(MathTest SHARED src/Driver.cpp src/mother.cpp src/androidactivity.cpp)
    # add_library(MathTest SHARED src/androidactivity.cpp src/mother.cpp)
@@ -120,5 +120,5 @@ else()
   endif()
 
     # Add a test program.
-add_executable(Main src/mother.c src/Main.cpp src/Driver.cpp)
+add_executable(Main src/mother.cpp src/Main.cpp src/Driver.cpp)
 endif(ANDROID)
