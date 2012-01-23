@@ -89,11 +89,13 @@ module](http://eigen.tuxfamily.org/dox-devel/unsupported/group__OpenGLSUpport__M
 which provides a few functions such as glTranslate and glRotate.
 
     // You need to add path_to_eigen/unsupported to your include path.
-    #include <Eigen/OpenGLSupport> // ...  Vector3f x, y; Matrix3f rot;
-    
+    #include <Eigen/OpenGLSupport>
+    // ...
+    Vector3f x, y; Matrix3f rot;
     glVertex(y + x * rot);
-
-    Quaternion q; glRotate(q);
+    
+    Quaternion q;
+    glRotate(q);
 
 Provides a large number of array, matrix, and vector types with [many
 operators](http://eigen.tuxfamily.org/dox/QuickRefPage.html#QuickRef_Types). 
