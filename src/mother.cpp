@@ -66,6 +66,10 @@ switch.
 |	Bob Wheeler 8/8/94
 */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 
 double Mother(unsigned long *pSeed)
 {
@@ -311,4 +315,6 @@ George Marsaglia geo@stat.fsu.edu
 
 
 
-
+#ifdef __cplusplus
+}
+#endif
