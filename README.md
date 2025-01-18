@@ -11,7 +11,7 @@ At the time of writing, the libraries tested are:
 
 * [Eigen](http://eigen.tuxfamily.org)
 * [GLM](http://glm.g-truc.net/)
-* [CML](http://cmldev.net/)
+* [CML](https://github.com/demianmnave/CML1)
   
 These choices are largely influenced by reading their websites and posts at
 the [Game Development StackExchange](http://gamedev.stackexchange.com/) site:
